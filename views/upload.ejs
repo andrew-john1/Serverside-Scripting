@@ -1,0 +1,11 @@
+<form action="<%= req.baseUrl + "/upload" %>" method="post" enctype="multipart/form-data">
+    <input type="file" name="<%= number %>" value="">
+
+    <label for="filename">Naam: </label>
+    <input type="text" id="filename" name="filename" value="">
+
+    <label for="caption">Korte omschrijving: </label>
+    <input type="text" id="caption" name="caption" value="<%= number %>">
+
+    <button>Upload!</button>
+</form>

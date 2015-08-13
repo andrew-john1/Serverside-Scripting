@@ -1,0 +1,25 @@
+<% if(locals.error){ %>
+<%= locals.error %>
+<% } %>
+
+<% if(!locals.error) { %>
+    <form action='<%= req.baseUrl + "/new" %>' method='post'>
+        <div>
+            <label for='username'>Naam</label>
+            <input type='text' name='username' id='username'>
+        </div>
+
+        <div>
+            <label for='email'>Email</label>
+            <input type='email' name='email' id='email'>
+        </div>
+
+        <div>
+            <label for='password'>Wachtwoord</label>
+            <input type='text' name='password' id='password'>
+        </div>
+        <div>
+            <button type='submit'>Opslaan</button>
+        </div>
+    </form>
+<% } %>

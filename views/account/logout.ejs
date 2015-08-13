@@ -1,0 +1,13 @@
+<% if(locals.error) { %>
+    <%= locals.error %>
+<% } %>
+
+<% if(!locals.error) { %>
+
+<h1>Weet u zeker dat u uit wilt loggen?</h1>
+
+    <form action="<%= req.baseUrl + '/logout' %>" method="post">
+        <label for="field_logout">Log hier uit </label>
+        <button type="submit" name="logout" value="logout">Log uit!</button>
+    </form>
+<% } %>

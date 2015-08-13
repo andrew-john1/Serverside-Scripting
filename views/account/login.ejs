@@ -1,0 +1,17 @@
+<h1>Log hier in</h1>
+
+<% if(locals.error) { %>
+    <%= locals.error %>
+<% } %>
+
+<% if(locals.input) { var localemail = locals.input.email } %>
+
+<form action="<%= req.baseUrl + '/login' %>" method="post">
+    <label for="field_username">Email: </label>
+    <input type="text" id="field_email" name="email" value="<%= localemail %>">
+
+    <label for="field_password">Wachtwoord: </label>
+    <input type="text" id="field_password" name="password" value="">
+
+    <button type="submit">Log nu in!</button>
+</form>

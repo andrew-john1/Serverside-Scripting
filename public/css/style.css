@@ -1,0 +1,27 @@
+.photogallery li {
+    list-style: none;
+    float: left;
+    height: 250px;
+    width: 400px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.photogallery li img {
+    width: 100%;
+    min-height: 250px;
+}
+
+.account li {
+    list-style: none;
+    float: left;
+    height: 170px;
+    width: 300px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.account li img {
+    width: 100%;
+    min-height: 250px;
+}

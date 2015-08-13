@@ -1,0 +1,36 @@
+<h1><%= req.session.filename %></h1> <h2> Gemaakt door <%= req.session.userName %></h2>
+
+<img src="http://localhost:3000/<%= file %>">
+
+<form action="http://localhost:3000/<%= file + '/download' %>"  method="post">
+    <button type="submit" name="download" value="download">Download</button>
+</form>
+
+<% console.log(req.session.comment) %>
+<% if(req.session.comment){ %>
+    <h2>Reacties</h2>
+<% } %>
+
+<% photoData.forEach(function(reaction) { %>
+    <% if(reaction.comment != null) { %>
+        <% var day = reaction.created_at; var day = JSON.stringify(day); var day = day.substring(1,11); %>
+        <% var time = reaction.created_at; var time = JSON.stringify(time); var time = time.substring(12,20); %>
+        <p><%= day %></p><p><%= time %></p><%= reaction.comment %></p>
+    <% }  %>
+<% }) %>
+
+<% if(req.session.email) { %>
+    <h2>Plaats een reactie </h2>
+
+    <form action='<%= req.baseUrl + '/:filename/details/reaction' %>' method='post'>
+        <div>
+            <textarea type='text' name='reaction' id='reaction' rows="10" cols="70" ></textarea>
+        </div>
+        <div>
+            <p><button type='submit'>Verstuur!</button></p>
+        </div>
+    </form>
+<% } else { %>
+    <h3>Je moet ingelogd zijn om een reactie te kunnen plaatsen</h3>
+    <a href="<%= req.baseUrl %>/account">Log in!</a>
+<% } %>

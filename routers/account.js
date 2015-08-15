@@ -5,9 +5,10 @@ router.get('/', function(req, res) {
     if(req.session.email) {
         req.getConnection(function(err, connection){
             if(err){ return next(err); }
-            connection.query('SELECT users.name , photos.caption , photos.filename FROM users LEFT JOIN photos ON users.id = photos.user_id WHERE email = ("' + req.session.email + '")', function(err, users){
+            connection.query('SELECT users.name , users.id , photos.caption , photos.filename FROM users LEFT JOIN photos ON users.id = photos.user_id WHERE email = ("' + req.session.email + '")', function(err, users){
                 if(err){ console.log(err); }
                 users.forEach(function(user) {
+                    req.session.userId = user.id;
                     req.session.username = user.name;
                     req.session.caption = user.caption;
                     req.session.filename = user.filename;
@@ -82,7 +83,7 @@ router.post('/new', function(req, res) {
             }
         });
         req.session.email = req.body.email;
-        req.session.userid = req.body.username;
+        req.session.username = req.body.username;
         res.redirect(req.baseUrl + '/');
     });
 });

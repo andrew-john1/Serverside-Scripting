@@ -5,15 +5,16 @@ router.get('/', function(req, res) {
     if(req.session.email) {
         req.getConnection(function(err, connection){
             if(err){ return next(err); }
-            connection.query('SELECT users.name , users.id , photos.caption , photos.filename FROM users LEFT JOIN photos ON users.id = photos.user_id WHERE email = ("' + req.session.email + '")', function(err, users){
-                if(err){ console.log(err); }
-                users.forEach(function(user) {
-                    req.session.userId = user.id;
-                    req.session.username = user.name;
-                    req.session.caption = user.caption;
-                    req.session.filename = user.filename;
-                });
-                res.render('account/index', {users: users, req: req});
+            connection.query('SELECT users.name , users.id , photos.caption , photos.filename FROM users LEFT JOIN photos ON users.id = photos.user_id WHERE email = ("' + req.session.email + '")',
+                function(err, users){
+                    if(err){ console.log(err); }
+                    users.forEach(function(user) {
+                        req.session.userId = user.id;
+                        req.session.username = user.name;
+                        req.session.caption = user.caption;
+                        req.session.filename = user.filename;
+                    });
+                    res.render('account/index', {users: users, req: req});
             });
         });
 
@@ -22,6 +23,28 @@ router.get('/', function(req, res) {
             req: req
         });
     }
+});
+
+router.get('/change', function(req, res) {
+    var data = { req: req };
+    res.render('account/change', data);
+});
+
+router.post('/change', function(req, res) {
+    req.getConnection(function(err, connection){
+        connection.query('UPDATE users SET email = "' + req.body.email + '", password = "' + req.body.password + '", name = "' + req.body.username + '" WHERE users.id = "' + req.session.userid + '" '),
+            function(err, users) {
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log(users);
+                }
+            };
+        console.log(req.session.userid);
+        req.session.email = req.body.email;
+        req.session.username = req.body.username;
+        res.redirect(req.baseUrl + '/');
+    });
 });
 
 router.post('/login', function(req, res) {

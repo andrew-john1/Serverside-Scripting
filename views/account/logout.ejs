@@ -1,13 +1,16 @@
-<% if(locals.error) { %>
-    <%= locals.error %>
-<% } %>
+<% include ../layout %>
 
-<% if(!locals.error) { %>
+<div class="content">
+    <% if(locals.error) { %>
+        <%= locals.error %>
+    <% } %>
 
-<h1>Weet u zeker dat u uit wilt loggen?</h1>
+    <% if(!locals.error) { %>
 
-    <form action="<%= req.baseUrl + '/logout' %>" method="post">
-        <label for="field_logout">Log hier uit </label>
-        <button type="submit" name="logout" value="logout">Log uit!</button>
-    </form>
-<% } %>
+    <h2>Weet u zeker dat u uit wilt loggen?</h2>
+
+        <form action="<%= req.baseUrl + '/logout' %>" method="post">
+            <button type="submit" name="logout" value="logout">Log uit!</button>
+        </form>
+    <% } %>
+</div>

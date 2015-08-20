@@ -128,7 +128,11 @@ router.post('/new', function(req, res) {
 
 router.get('/logout', function(req, res) {
     if(!req.session.email) {
-        res.redirect(req.baseUrl );
+        var data = {
+            req: req,
+            error: "U bent al uitgelogd."
+        };
+        res.render('account/login', data);
     } else {
         var data = {req: req};
         res.render('account/logout', data);

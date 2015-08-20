@@ -80,7 +80,10 @@ router.get('/upload', function(req, res) {
         };
         res.render('upload', data);
     } else {
-        res.redirect('/');
+        var data = {
+            error: "U moet ingelogd zijn om een foto te kunnen uploaden."
+        }
+        res.render('account/login', data);
     }
 });
 
@@ -89,8 +92,8 @@ router.post('/upload', function(req, res) {
         if (err) {
             return next(err);
         }
-        var userId = req.session.userid;
-        connection.query('INSERT INTO photos (user_id, caption, filename) VALUES ("' + userId + '", "' + req.body.caption + '", "' + req.body.filename + '")',
+
+        connection.query('INSERT INTO photos (user_id, caption, filename) VALUES ("' + req.session.userId + '", "' + req.body.caption + '", "' + req.body.filename + '")',
             function (err, photos) {
                 if (err) {
                     console.log(err);

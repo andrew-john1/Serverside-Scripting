@@ -1,22 +1,23 @@
-<link href="/css/style.css" rel="stylesheet" type="text/css">
+<% include ../layout %>
 
-<h2>Hallo <%= req.session.username %></h2>
-<h3>Uw email adres is: <%= req.session.email %></h3>
+<div class="content">
+    <h2>Hallo <%= req.session.username %></h2>
 
-<a href="<%= req.baseUrl %>/change">Verander hier uw gegevens</a>
+    <a href="<%= req.baseUrl %>/change">Verander hier uw gegevens</a>
 
-<% if(req.session.caption) { %>
-    <h3>Foto's die u hebt geupload</h3>
+    <% if(req.session.caption) { %>
+        <h3>Foto's die u hebt geupload</h3>
 
-    <ul class="account">
-        <% users.forEach(function(user) { %>
-            <li>
-                <%= user.filename %>
-                <img src="http://localhost:3000/<%= user.caption %>.png" />
-                <button type="submit" value="<%= user.filename %>"><%= user.filename %></button>
-            </li>
-        <% }) %>
-    </ul>
-<% } else { %>
-    <p>U hebt nog geen foto's geupload. <a href="/upload">Load hier uw eerste foto op.</a></p>
-<% } %>
+        <ul class="account">
+            <% users.forEach(function(user) { %>
+                <li>
+                    <%= user.filename %>
+                    <img src="http://localhost:3000/<%= user.caption %>.png" />
+                    <button type="submit" value="<%= user.filename %>"><%= user.filename %></button>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>U hebt nog geen foto's geupload. <a href="/upload">Load hier uw eerste foto op.</a></p>
+    <% } %>
+</div><!-- /.container -->

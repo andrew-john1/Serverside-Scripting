@@ -1,9 +1,8 @@
-<link href="/css/style.css" rel="stylesheet" type="text/css">
+<% include layout %>
 
-<h1>Afbeeldingen</h1>
 
 <ul class="photogallery">
     <% files.forEach(function(file){ %>
-        <li><div><a href="<%= req.baseUrl + file + '/details' %>"><img src="<%= req.baseUrl + file %>"></a></div></li>
+    <li><div><a href="<%= req.baseUrl + file + '/details' %>"><img src="<%= req.baseUrl + file %>"></a></div></li>
     <% }) %>
 </ul>

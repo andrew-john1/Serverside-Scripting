@@ -1,3 +1,7 @@
+body {
+    padding-top: 20px;
+}
+
 .photogallery li {
     list-style: none;
     float: left;
@@ -25,4 +29,12 @@
 .account li img {
     width: 100%;
     min-height: 250px;
+}
+
+.detailphoto {
+    max-height: 300px;
+}
+
+.content {
+    margin-left: 50px;
 }

@@ -1,3 +1,4 @@
+<% include layout %>
 <form action="<%= req.baseUrl + "/upload" %>" method="post" enctype="multipart/form-data">
     <input type="file" name="<%= number %>" value="">
 
@@ -5,7 +6,7 @@
     <input type="text" id="filename" name="filename" value="">
 
     <label for="caption">Korte omschrijving: </label>
-    <input type="text" id="caption" name="caption" value="<%= number %>">
+    <input type="text" id="caption" name="caption" value="<%= number %>" readonly='readonly'>
 
     <button>Upload!</button>
 </form>

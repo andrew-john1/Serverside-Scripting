@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt-nodejs');
 
 router.get('/', function(req, res) {
     if(req.session.email) {
@@ -32,7 +33,12 @@ router.get('/change', function(req, res) {
 
 router.post('/change', function(req, res) {
     req.getConnection(function(err, connection){
-        connection.query('UPDATE users SET email = "' + req.body.email + '", password = "' + req.body.password + '", name = "' + req.body.username + '" WHERE users.id = "' + req.session.userid + '" '),
+
+        var email = req.body.email;
+        var username = req.body.username;
+        var hash = bcrypt.hashSync(req.body.password);
+
+        connection.query('UPDATE users SET email = "' + email + '", password = "' + hash + '", name = "' + username + '" WHERE users.id = "' + req.session.userId + '" '),
             function(err, users) {
                 if(err){
                     console.log(err);
@@ -40,9 +46,8 @@ router.post('/change', function(req, res) {
                     console.log(users);
                 }
             };
-        console.log(req.session.userid);
-        req.session.email = req.body.email;
-        req.session.username = req.body.username;
+        req.session.email = email;
+        req.session.username = username;
         res.redirect(req.baseUrl + '/');
     });
 });
@@ -52,7 +57,7 @@ router.post('/login', function(req, res) {
         if(err){
             return next(err);
         }
-        connection.query('SELECT * FROM users WHERE email = ("' + req.body.email + '") AND password = ("' + req.body.password + '")', function(err, users){
+        connection.query('SELECT * FROM users WHERE email = ("' + req.body.email + '")', function(err, users){
 
             var users = users;
 
@@ -60,22 +65,28 @@ router.post('/login', function(req, res) {
                 var data = {
                     req: req,
                     input: req.body,
-                    error: "De inloggegevens zijn niet correct."
+                    error: "Het ingevulde email adres is niet correct."
                 };
-                delete data.input.password;
                 return res.render('account/login', data);
             }
 
             users.forEach(function(user) {
-                var useremail = user.email;
-                var userpassword = user.password;
-                var userid = user.id;
+                var userEmail = user.email;
+                var userPassword = user.password;
+                var userId = user.id;
 
-                if((useremail === req.body.email) && (userpassword === req.body.password)) {
-                    req.session.userid = userid;
-                    req.session.email = req.body.email;
+                if(bcrypt.compareSync(req.body.password, userPassword)) {
+                    req.session.userId = userId;
+                    req.session.email = userEmail;
 
                     res.redirect(req.baseUrl + '/');
+                } else {
+                    var data = {
+                        req: req,
+                        input: req.body,
+                        error: "Het ingevulde wachtwoord is niet correct."
+                    };
+                    return res.render('account/login', data);
                 }
             });
         });
@@ -97,7 +108,11 @@ router.get('/new', function(req, res) {
 
 router.post('/new', function(req, res) {
     req.getConnection(function(err, connection){
-        connection.query('INSERT INTO users (email, password, name) VALUES ("' + req.body.email + '", "' + req.body.password + '", "' + req.body.username + '")',
+        var email = req.body.email;
+        var hash = bcrypt.hashSync(req.body.password);
+        var username = req.body.username;
+
+        connection.query('INSERT INTO users (email, password, name) VALUES ("' + email + '", "' + hash + '", "' + username + '")',
             function(err, users) {
             if(err){
                 console.log(err);
@@ -105,8 +120,8 @@ router.post('/new', function(req, res) {
                 console.log(users);
             }
         });
-        req.session.email = req.body.email;
-        req.session.username = req.body.username;
+        req.session.email = email;
+        req.session.username = username;
         res.redirect(req.baseUrl + '/');
     });
 });
@@ -126,11 +141,6 @@ router.post('/logout', function(req, res) {
         req.session.destroy();
         res.redirect('/account');
     }
-});
-
-router.get('/delete/', function(req, res) {
-    var index = req.param;
-    res.send
 });
 
 module.exports = router;

@@ -87,20 +87,27 @@ router.get('/upload', function(req, res) {
 
 router.post('/upload', function(req, res) {
     req.getConnection(function(err, connection) {
-        if (err) {
-            return next(err);
-        }
 
-        connection.query('INSERT INTO photos (user_id, caption, filename) VALUES ("' + req.session.userId + '", "' + req.body.caption + '", "' + req.body.filename + '")',
-            function (err, photos) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(photos);
-                }
-        });
+        var emptyImage = Object.getOwnPropertyNames(req.files).length;
+
+        if (req.body.filename === undefined || emptyImage === 0) {
+            var data = {
+                error: "Selecteer eerst een foto en geef deze een naam.",
+                number: Math.floor((Math.random() * 1000) + 1)
+            };
+            res.render('upload', data);
+        } else {
+            connection.query('INSERT INTO photos (user_id, caption, filename) VALUES ("' + req.session.userId + '", "' + req.body.caption + '", "' + req.body.filename + '")',
+                function (err, photos) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(photos);
+                    }
+            });
+            res.redirect('/');
+        }
     });
-    res.redirect('/');
 });
 
 module.exports = router;

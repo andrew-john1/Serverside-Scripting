@@ -1,12 +1,17 @@
 <% include layout %>
-<form action="<%= req.baseUrl + "/upload" %>" method="post" enctype="multipart/form-data">
-    <input type="file" name="<%= number %>" value="">
+<div class="content">
+    <form action="<%= req.baseUrl + "/upload" %>" method="post" enctype="multipart/form-data">
 
-    <label for="filename">Naam: </label>
-    <input type="text" id="filename" name="filename" value="">
+        <% if (locals.error) { %>
+            <p><%= locals.error %></p>
+        <% } %>
+        <input type="file" name="<%= number %>" value="">
 
-    <label for="caption">Korte omschrijving: </label>
-    <input type="text" id="caption" name="caption" value="<%= number %>" readonly='readonly'>
+        <label class="upload" for="filename">Naam: </label>
+        <input type="text" id="filename" name="filename" value="">
 
-    <button>Upload!</button>
-</form>
+        <input type="hidden" id="caption" name="caption" value="<%= number %>" readonly='readonly'>
+
+        <button>Upload!</button>
+    </form>
+</div>

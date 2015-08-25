@@ -5,6 +5,11 @@
         <%= locals.error %>
     <% } %>
 
+    <% var passedVariable = passedVariable %>
+    <% if(passedVariable) { %>
+        <%= locals.loginError %>
+    <% } %>
+
     <h1>Log hier in</h1>
     <% if(locals.input) { var localemail = locals.input.email } %>
 
@@ -13,7 +18,7 @@
         <input type="text" id="field_email" name="email" value="<%= localemail %>">
 
         <label for="field_password">Wachtwoord: </label>
-        <input type="text" id="field_password" name="password" value="">
+        <input type="password" id="field_password" name="password" value="">
 
         <button type="submit">Log nu in!</button>
     </form>

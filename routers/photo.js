@@ -80,10 +80,8 @@ router.get('/upload', function(req, res) {
         };
         res.render('upload', data);
     } else {
-        var data = {
-            error: "U moet ingelogd zijn om een foto te kunnen uploaden."
-        }
-        res.render('account/login', data);
+        req.session.valid = true;
+        res.redirect('account');
     }
 });
 
@@ -103,7 +101,6 @@ router.post('/upload', function(req, res) {
         });
     });
     res.redirect('/');
-
 });
 
 module.exports = router;

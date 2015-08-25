@@ -20,8 +20,12 @@ router.get('/', function(req, res) {
         });
 
     } else {
+        var passedVariable = req.session.valid;
+        req.session.valid = null;
         res.render('account/login', {
-            req: req
+            req: req,
+            passedVariable: passedVariable,
+            loginError: "U moet eerst ingelogd zijn om een foto te kunnen uploaden."
         });
     }
 });
